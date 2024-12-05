@@ -5,7 +5,8 @@ import React, {useState} from "react";
 import {createRoot} from "react-dom/client";
 import Clock from "./Clock.jsx";
 import Timer from "./Timer.jsx";
-
+import TodoOne from "./TodoOne.jsx";
+import CountMe from "./CountMe.jsx";
 
 const TITLE = "Hello Clock Application";
 
@@ -18,6 +19,10 @@ function App(){
 			<Clock />
 			<hr/>
 			<Timer />
+			<hr/>
+			<TodoOne />
+			<hr/>
+			<CountMe/>
 		</div>
 	);
 }

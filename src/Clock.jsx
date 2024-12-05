@@ -16,7 +16,7 @@ function Clock(){
 	},[]);
 
 	return (
-		<h2>The time is : {dateStr}</h2>
+		<h2>The Clock says : {dateStr}</h2>
 	);
 }
 

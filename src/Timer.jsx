@@ -14,7 +14,7 @@ function Timer(){
 	});
 
 	return (
-		<h2>The time is : {time}</h2>
+		<h2>The timer is : {time}</h2>
 	);
 }
 
