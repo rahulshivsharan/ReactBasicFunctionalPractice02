@@ -7,6 +7,7 @@ import Clock from "./Clock.jsx";
 import Timer from "./Timer.jsx";
 import TodoOne from "./TodoOne.jsx";
 import CountMe from "./CountMe.jsx";
+import ClickUp from "./ClickUp.jsx";
 
 const TITLE = "Hello Clock Application";
 
@@ -23,6 +24,8 @@ function App(){
 			<TodoOne />
 			<hr/>
 			<CountMe/>
+			<hr/>
+			<ClickUp/>
 		</div>
 	);
 }
