@@ -3,6 +3,7 @@ import React, {useEffect, useReducer} from "react";
 import * as dateFormat from "date-format";
 
 function Clock(){
+	console.log("Clock Screen loaded");
 
 	var reducerLogic = function(){
 		return dateFormat.asString("hh:mm:ss", new Date());

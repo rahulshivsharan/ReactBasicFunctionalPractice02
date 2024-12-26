@@ -4,6 +4,8 @@ import * as dateFormat from "date-format";
 
 function Timer(){
 
+	console.log("Timer Screen loaded");
+
 	const [time, setTime] = useState("00:00:00");
 
 	useEffect(()=>{

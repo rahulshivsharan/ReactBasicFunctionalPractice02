@@ -13,6 +13,8 @@ function sayHi(request, response){
 app.get("/hi",sayHi);
 
 app.use("/",express.static("dest"));
+
+
 app.listen(PORT, ()=> {
 	console.log(`React-Browserify Demo app ${PORT}`);
 });

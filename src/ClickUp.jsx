@@ -4,6 +4,8 @@ import React, {useState, useEffect, useReducer} from "react";
 
 function ClickUp(){
 
+	console.log("ClickUp Screen loaded");
+
 	const [count, dispatch] = useReducer((count, action)=>{  // useReducer(reducerFunctionLogic, IntialState)
 		if(action.type === "ADD_UP"){
 			count += 1;			
