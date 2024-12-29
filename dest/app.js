@@ -56097,6 +56097,177 @@ function DefaultScreen() {
 },{"react":12}],26:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = MovieSearch;
+var _react = _interopRequireWildcard(require("react"));
+var _movieAPI = _interopRequireDefault(require("./movieAPI"));
+var _Spinner = _interopRequireDefault(require("./Spinner.jsx"));
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function MovieSearch() {
+  var initialObjectVal = {
+    "movieQuery": "",
+    "movieList": []
+  };
+  var createMovieListComponent = function createMovieListComponent(movielist, isLoading) {
+    if (isLoading == true) {
+      return /*#__PURE__*/_react["default"].createElement(_Spinner["default"], null);
+    }
+    return isLoading === false && movielist !== undefined && movielist !== null && movielist.length > 0 ? movielist.map(function (movieData) {
+      return /*#__PURE__*/_react["default"].createElement("table", {
+        className: "table table-stripped table-bordered"
+      }, /*#__PURE__*/_react["default"].createElement("thead", null, /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("th", null, "Title"), /*#__PURE__*/_react["default"].createElement("th", null, "Release Year"), /*#__PURE__*/_react["default"].createElement("th", null, "Type"), /*#__PURE__*/_react["default"].createElement("th", null, "Credits"), /*#__PURE__*/_react["default"].createElement("th", null, "Poster"))), /*#__PURE__*/_react["default"].createElement("tbody", null, /*#__PURE__*/_react["default"].createElement("tr", {
+        key: movieData.id
+      }, /*#__PURE__*/_react["default"].createElement("td", null, movieData.titleNameText), /*#__PURE__*/_react["default"].createElement("td", null, movieData.titleReleaseText), /*#__PURE__*/_react["default"].createElement("td", null, movieData.titleTypeText), /*#__PURE__*/_react["default"].createElement("td", null, /*#__PURE__*/_react["default"].createElement("ul", null, movieData.topCredits.map(function (credit) {
+        return /*#__PURE__*/_react["default"].createElement("li", null, credit);
+      }))), /*#__PURE__*/_react["default"].createElement("td", null, movieData["titlePosterImageModel"] !== undefined ? /*#__PURE__*/_react["default"].createElement("img", {
+        src: movieData.titlePosterImageModel.url,
+        height: "290px",
+        width: "300px",
+        alt: movieData.titlePosterImageModel.caption
+      }) : /*#__PURE__*/_react["default"].createElement("img", {
+        src: "",
+        height: "290px",
+        width: "300px",
+        alt: movieData.titleNameText
+      })))));
+    }) : null;
+  };
+  var reducerFn = function reducerFn(state, action) {
+    if (action.type === "SET_MOVIE") {
+      return _objectSpread(_objectSpread({}, state), {}, {
+        "movieQuery": action.searchQuery
+      });
+    }
+    if (action.type === "SEARCH_MOVIE") {
+      var payload = [];
+      _movieAPI["default"].getMovieList(action.searchQuery).then(function (data) {
+        console.log(data);
+        if ("results" in data["titleResults"]) {
+          payload = data["titleResults"]["results"];
+          dispatchFn({
+            "type": "LOAD_MOVIE_LIST",
+            "payload": payload
+          });
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+      return _objectSpread(_objectSpread({}, state), {}, {
+        "movieList": [],
+        "movieListComponent": createMovieListComponent(undefined, true)
+      });
+    }
+    if (action.type === "LOAD_MOVIE_LIST") {
+      return _objectSpread(_objectSpread({}, state), {}, {
+        "movieList": action.payload,
+        "movieListComponent": createMovieListComponent(action.payload, false)
+      });
+    }
+    if (action.type === "MOVIE_RESET") {
+      return _objectSpread(_objectSpread({}, state), {}, {
+        "movieQuery": "",
+        "movieList": [],
+        "movieListComponent": createMovieListComponent(undefined, false)
+      });
+    }
+  };
+  var _useReducer = (0, _react.useReducer)(reducerFn, initialObjectVal),
+    _useReducer2 = _slicedToArray(_useReducer, 2),
+    state = _useReducer2[0],
+    dispatchFn = _useReducer2[1];
+  return /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("form", {
+    className: "form-horizontal"
+  }, /*#__PURE__*/_react["default"].createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/_react["default"].createElement("label", {
+    "for": "inputmovie",
+    className: "col-sm-2 control-label"
+  }, "Search"), /*#__PURE__*/_react["default"].createElement("div", {
+    className: "col-sm-10"
+  }, /*#__PURE__*/_react["default"].createElement("input", {
+    type: "text",
+    className: "form-control",
+    id: "inputmovie",
+    placeholder: "search",
+    value: state.movieQuery,
+    onChange: function onChange(event) {
+      dispatchFn({
+        "type": "SET_MOVIE",
+        "searchQuery": event.target.value
+      });
+    }
+  }))), /*#__PURE__*/_react["default"].createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/_react["default"].createElement("div", {
+    className: "col-sm-offset-2 col-sm-10"
+  }, /*#__PURE__*/_react["default"].createElement("button", {
+    type: "button",
+    className: "btn btn-primary",
+    onClick: function onClick() {
+      dispatchFn({
+        "type": "SEARCH_MOVIE",
+        "searchQuery": state.movieQuery
+      });
+    }
+  }, "Enter"), "\xA0", /*#__PURE__*/_react["default"].createElement("button", {
+    type: "button",
+    className: "btn btn-default",
+    onClick: function onClick() {
+      dispatchFn({
+        "type": "MOVIE_RESET",
+        "searchQuery": ""
+      });
+    }
+  }, "Reset")))), /*#__PURE__*/_react["default"].createElement("hr", null), state.movieListComponent);
+}
+
+},{"./Spinner.jsx":27,"./movieAPI":31,"react":12}],27:[function(require,module,exports){
+'use strict';
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = Spinner;
+var _react = _interopRequireWildcard(require("react"));
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function Spinner() {
+  var _useState = (0, _react.useState)("asset/Fountain.gif"),
+    _useState2 = _slicedToArray(_useState, 2),
+    imageUrl = _useState2[0],
+    setImageUrl = _useState2[1];
+  return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("img", {
+    src: imageUrl,
+    alt: "spinner"
+  }));
+}
+
+},{"react":12}],28:[function(require,module,exports){
+'use strict';
+
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -56128,7 +56299,7 @@ function Timer() {
 }
 var _default = exports["default"] = Timer;
 
-},{"date-format":1,"react":12}],27:[function(require,module,exports){
+},{"date-format":1,"react":12}],29:[function(require,module,exports){
 'use strict';
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -56202,7 +56373,7 @@ function TodoOne() {
 }
 var _default = exports["default"] = TodoOne;
 
-},{"react":12}],28:[function(require,module,exports){
+},{"react":12}],30:[function(require,module,exports){
 'use strict';
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -56220,6 +56391,7 @@ var _TodoOne = _interopRequireDefault(require("./TodoOne.jsx"));
 var _CountMe = _interopRequireDefault(require("./CountMe.jsx"));
 var _ClickUp = _interopRequireDefault(require("./ClickUp.jsx"));
 var _DefaultScreen = _interopRequireDefault(require("./DefaultScreen.jsx"));
+var _MovieSearch = _interopRequireDefault(require("./MovieSearch.jsx"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
@@ -56273,7 +56445,9 @@ function App() {
     to: "/todo1"
   }, "Todo One")), /*#__PURE__*/_react["default"].createElement("li", null, /*#__PURE__*/_react["default"].createElement(_reactRouter.Link, {
     to: "/clickup"
-  }, "Click Up")))))))), /*#__PURE__*/_react["default"].createElement("div", {
+  }, "Click Up")), /*#__PURE__*/_react["default"].createElement("li", null, /*#__PURE__*/_react["default"].createElement(_reactRouter.Link, {
+    to: "/movie"
+  }, "Movie Search")))))))), /*#__PURE__*/_react["default"].createElement("div", {
     className: "container"
   }, /*#__PURE__*/_react["default"].createElement("div", {
     className: "row"
@@ -56300,6 +56474,9 @@ function App() {
   }), /*#__PURE__*/_react["default"].createElement(_reactRouter.Route, {
     path: "/clickup",
     element: /*#__PURE__*/_react["default"].createElement(_ClickUp["default"], null)
+  }), /*#__PURE__*/_react["default"].createElement(_reactRouter.Route, {
+    path: "/movie",
+    element: /*#__PURE__*/_react["default"].createElement(_MovieSearch["default"], null)
   })))))));
 }
 (0, _jquery["default"])(document).ready(function () {
@@ -56309,4 +56486,47 @@ function App() {
   root.render(/*#__PURE__*/_react["default"].createElement(App, null));
 });
 
-},{"./ClickUp.jsx":22,"./Clock.jsx":23,"./CountMe.jsx":24,"./DefaultScreen.jsx":25,"./Timer.jsx":26,"./TodoOne.jsx":27,"jquery":2,"react":12,"react-dom/client":6,"react-router":8}]},{},[28]);
+},{"./ClickUp.jsx":22,"./Clock.jsx":23,"./CountMe.jsx":24,"./DefaultScreen.jsx":25,"./MovieSearch.jsx":26,"./Timer.jsx":28,"./TodoOne.jsx":29,"jquery":2,"react":12,"react-dom/client":6,"react-router":8}],31:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+var requestSetting = {
+  "headers": {
+    "x-rapidapi-host": "imdb146.p.rapidapi.com",
+    "x-rapidapi-key": "1edc484509msh0b9ee0d9fc9a10bp12fc7cjsn0d9ff320e536"
+  }
+};
+var getMovieList = function getMovieList(movieName) {
+  console.log("Movie to be searched " + movieName);
+  var url = "https://imdb146.p.rapidapi.com/v1/find/?query=" + movieName;
+  console.log("Movie url " + url);
+  return getRequest(url);
+};
+var getRequest = function getRequest(url) {
+  return new Promise(function (resolve, reject) {
+    $.ajax(_objectSpread(_objectSpread({}, requestSetting), {}, {
+      "url": url,
+      "type": "GET",
+      "success": function success(data) {
+        resolve(data);
+      },
+      "error": function error(xhr, status, _error) {
+        reject(_error);
+      }
+    }));
+  });
+};
+var _default = exports["default"] = {
+  "getMovieList": getMovieList
+};
+
+},{}]},{},[30]);

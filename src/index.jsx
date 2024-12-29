@@ -11,6 +11,7 @@ import TodoOne from "./TodoOne.jsx";
 import CountMe from "./CountMe.jsx";
 import ClickUp from "./ClickUp.jsx";
 import DefaultScreen from "./DefaultScreen.jsx";
+import MovieSearch from "./MovieSearch.jsx";
 
 
 export default function App(){
@@ -41,6 +42,7 @@ export default function App(){
 									           <li><Link to="/timer">Timer</Link></li>
 									           <li><Link to="/todo1">Todo One</Link></li>						           
 									           <li><Link to="/clickup">Click Up</Link></li>
+									           <li><Link to="/movie">Movie Search</Link></li>
 								         	</ul>
 								        </li>
 									</ul>
@@ -59,6 +61,7 @@ export default function App(){
 									<Route  path="/todo1" element={<TodoOne/>} />
 									<Route  path="/countme" element={<CountMe/>} />
 									<Route  path="/clickup" element={<ClickUp/>} />
+									<Route  path="/movie" element={<MovieSearch/>} />
 								</Routes>
 							</div>
 						</div>				
