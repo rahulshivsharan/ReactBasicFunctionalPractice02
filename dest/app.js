@@ -55946,6 +55946,163 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = ActorSearch;
+var _react = _interopRequireWildcard(require("react"));
+var _movieAPI = _interopRequireDefault(require("./movieAPI"));
+var _Spinner = _interopRequireDefault(require("./Spinner.jsx"));
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function ActorSearch() {
+  var _useState = (0, _react.useState)(""),
+    _useState2 = _slicedToArray(_useState, 2),
+    movieQuery = _useState2[0],
+    setMovieQuery = _useState2[1];
+  var _useState3 = (0, _react.useState)(""),
+    _useState4 = _slicedToArray(_useState3, 2),
+    searchQuery = _useState4[0],
+    setSearchQuery = _useState4[1];
+  var _useState5 = (0, _react.useState)([]),
+    _useState6 = _slicedToArray(_useState5, 2),
+    movieInfoList = _useState6[0],
+    setMovieInfoList = _useState6[1];
+  var _useState7 = (0, _react.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    loading = _useState8[0],
+    setLoading = _useState8[1];
+  var handleSearch = function handleSearch() {
+    _movieAPI["default"].getMovieList(movieQuery).then(function (data) {
+      //console.log(data);
+      var list = [];
+      if ("results" in data["titleResults"]) {
+        var movieList = data["titleResults"]["results"];
+        list.push(movieList);
+      }
+      if ("results" in data["nameResults"]) {
+        var nameList = data["nameResults"]["results"];
+        list.push(nameList);
+      }
+      setLoading(false);
+      setMovieInfoList(list);
+      createMovieListComponent();
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  };
+  var resetValues = function resetValues() {
+    setMovieInfoList(undefined);
+    setLoading(false);
+    setMovieQuery("");
+    setSeachQuery("");
+  };
+  (0, _react.useEffect)(function () {
+    if (searchQuery !== undefined && searchQuery !== "") {
+      handleSearch();
+    }
+  }, [searchQuery]);
+  var createMovieComponent = function createMovieComponent(list) {
+    return /*#__PURE__*/_react["default"].createElement("table", {
+      className: "table table-stripped table-bordered"
+    }, /*#__PURE__*/_react["default"].createElement("thead", null, /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("th", null, "Title"), /*#__PURE__*/_react["default"].createElement("th", null, "Release Year"), /*#__PURE__*/_react["default"].createElement("th", null, "Type"), /*#__PURE__*/_react["default"].createElement("th", null, "Credits"), /*#__PURE__*/_react["default"].createElement("th", null, "Poster"))), /*#__PURE__*/_react["default"].createElement("tbody", null, list.map(function (movieData) {
+      return /*#__PURE__*/_react["default"].createElement("tr", {
+        key: movieData.id
+      }, /*#__PURE__*/_react["default"].createElement("td", null, movieData.titleNameText), /*#__PURE__*/_react["default"].createElement("td", null, movieData.titleReleaseText), /*#__PURE__*/_react["default"].createElement("td", null, movieData.titleTypeText), /*#__PURE__*/_react["default"].createElement("td", null, /*#__PURE__*/_react["default"].createElement("ul", null, movieData.topCredits.map(function (credit) {
+        return /*#__PURE__*/_react["default"].createElement("li", null, credit);
+      }))), /*#__PURE__*/_react["default"].createElement("td", null, movieData["titlePosterImageModel"] !== undefined ? /*#__PURE__*/_react["default"].createElement("img", {
+        src: movieData.titlePosterImageModel.url,
+        height: "290px",
+        width: "300px",
+        alt: movieData.titlePosterImageModel.caption
+      }) : /*#__PURE__*/_react["default"].createElement("img", {
+        src: "",
+        height: "290px",
+        width: "300px",
+        alt: movieData.titleNameText
+      })));
+    })));
+  };
+  var createNameComponent = function createNameComponent(list) {
+    return /*#__PURE__*/_react["default"].createElement("table", {
+      className: "table table-stripped table-bordered"
+    }, /*#__PURE__*/_react["default"].createElement("thead", null, /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("th", null, "Name"), /*#__PURE__*/_react["default"].createElement("th", null, "Category"), /*#__PURE__*/_react["default"].createElement("th", null, "Known For"), /*#__PURE__*/_react["default"].createElement("th", null, "Year"), /*#__PURE__*/_react["default"].createElement("th", null, "Poster"))), /*#__PURE__*/_react["default"].createElement("tbody", null, list.map(function (nameData) {
+      return /*#__PURE__*/_react["default"].createElement("tr", {
+        key: nameData.id
+      }, /*#__PURE__*/_react["default"].createElement("td", null, nameData.displayNameText), /*#__PURE__*/_react["default"].createElement("td", null, nameData.knownForJobCategory), /*#__PURE__*/_react["default"].createElement("td", null, nameData.knownForTitleText), /*#__PURE__*/_react["default"].createElement("td", null, nameData.knownForTitleYear), /*#__PURE__*/_react["default"].createElement("td", null, nameData["avatarImageModel"] !== undefined ? /*#__PURE__*/_react["default"].createElement("img", {
+        src: nameData.avatarImageModel.url,
+        height: "290px",
+        width: "300px",
+        alt: nameData.avatarImageModel.caption
+      }) : /*#__PURE__*/_react["default"].createElement("img", {
+        src: "",
+        height: "290px",
+        width: "300px",
+        alt: nameData.displayNameText
+      })));
+    })));
+  };
+  var createMovieListComponent = function createMovieListComponent() {
+    if (loading == true) {
+      return /*#__PURE__*/_react["default"].createElement(_Spinner["default"], null);
+    } else {
+      var movieList = loading === false && movieInfoList !== undefined && movieInfoList !== null && movieInfoList.length >= 1 ? movieInfoList[0] : [];
+      var nameList = loading === false && movieInfoList !== undefined && movieInfoList !== null && movieInfoList.length == 2 ? movieInfoList[1] : [];
+      if (loading === false && movieInfoList !== undefined && movieInfoList !== null && movieInfoList.length > 0) {
+        return /*#__PURE__*/_react["default"].createElement("div", null, createMovieComponent(movieList), /*#__PURE__*/_react["default"].createElement("hr", null), createNameComponent(nameList));
+      }
+    }
+  };
+  return /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h3", null, "Using hook useEffect"), /*#__PURE__*/_react["default"].createElement("form", {
+    className: "form-horizontal"
+  }, /*#__PURE__*/_react["default"].createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/_react["default"].createElement("label", {
+    "for": "inputmovie",
+    className: "col-sm-2 control-label"
+  }, "Search"), /*#__PURE__*/_react["default"].createElement("div", {
+    className: "col-sm-10"
+  }, /*#__PURE__*/_react["default"].createElement("input", {
+    type: "text",
+    className: "form-control",
+    id: "inputmovie",
+    placeholder: "search",
+    value: movieQuery,
+    onChange: function onChange(event) {
+      return setMovieQuery(event.target.value);
+    }
+  }))), /*#__PURE__*/_react["default"].createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/_react["default"].createElement("div", {
+    className: "col-sm-offset-2 col-sm-10"
+  }, /*#__PURE__*/_react["default"].createElement("button", {
+    type: "button",
+    className: "btn btn-primary",
+    onClick: function onClick() {
+      setLoading(true);
+      setSearchQuery(movieQuery);
+      handleSearch();
+    }
+  }, "Enter"), "\xA0", /*#__PURE__*/_react["default"].createElement("button", {
+    type: "button",
+    className: "btn btn-default",
+    onClick: function onClick() {
+      resetValues();
+    }
+  }, "Reset")))), /*#__PURE__*/_react["default"].createElement("hr", null), createMovieListComponent());
+}
+
+},{"./Spinner.jsx":28,"./movieAPI":32,"react":12}],23:[function(require,module,exports){
+'use strict';
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports["default"] = void 0;
 var _react = _interopRequireWildcard(require("react"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
@@ -55997,7 +56154,7 @@ function ClickUp() {
 }
 var _default = exports["default"] = ClickUp;
 
-},{"react":12}],23:[function(require,module,exports){
+},{"react":12}],24:[function(require,module,exports){
 'use strict';
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -56032,7 +56189,7 @@ function Clock() {
 }
 var _default = exports["default"] = Clock;
 
-},{"date-format":1,"react":12}],24:[function(require,module,exports){
+},{"date-format":1,"react":12}],25:[function(require,module,exports){
 'use strict';
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -56064,7 +56221,7 @@ function CountMe() {
 }
 var _default = exports["default"] = CountMe;
 
-},{"react":12}],25:[function(require,module,exports){
+},{"react":12}],26:[function(require,module,exports){
 'use strict';
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -56094,7 +56251,7 @@ function DefaultScreen() {
   }, title));
 }
 
-},{"react":12}],26:[function(require,module,exports){
+},{"react":12}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56224,7 +56381,7 @@ function MovieSearch() {
     _useReducer2 = _slicedToArray(_useReducer, 2),
     state = _useReducer2[0],
     dispatchFn = _useReducer2[1];
-  return /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("form", {
+  return /*#__PURE__*/_react["default"].createElement(_react.Fragment, null, /*#__PURE__*/_react["default"].createElement("h3", null, "Using hook useReducer"), /*#__PURE__*/_react["default"].createElement("form", {
     className: "form-horizontal"
   }, /*#__PURE__*/_react["default"].createElement("div", {
     className: "form-group"
@@ -56269,7 +56426,7 @@ function MovieSearch() {
   }, "Reset")))), /*#__PURE__*/_react["default"].createElement("hr", null), state.movieListComponent);
 }
 
-},{"./Spinner.jsx":27,"./movieAPI":31,"react":12}],27:[function(require,module,exports){
+},{"./Spinner.jsx":28,"./movieAPI":32,"react":12}],28:[function(require,module,exports){
 'use strict';
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -56297,7 +56454,7 @@ function Spinner() {
   }));
 }
 
-},{"react":12}],28:[function(require,module,exports){
+},{"react":12}],29:[function(require,module,exports){
 'use strict';
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -56331,7 +56488,7 @@ function Timer() {
 }
 var _default = exports["default"] = Timer;
 
-},{"date-format":1,"react":12}],29:[function(require,module,exports){
+},{"date-format":1,"react":12}],30:[function(require,module,exports){
 'use strict';
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -56405,7 +56562,7 @@ function TodoOne() {
 }
 var _default = exports["default"] = TodoOne;
 
-},{"react":12}],30:[function(require,module,exports){
+},{"react":12}],31:[function(require,module,exports){
 'use strict';
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
@@ -56424,6 +56581,7 @@ var _CountMe = _interopRequireDefault(require("./CountMe.jsx"));
 var _ClickUp = _interopRequireDefault(require("./ClickUp.jsx"));
 var _DefaultScreen = _interopRequireDefault(require("./DefaultScreen.jsx"));
 var _MovieSearch = _interopRequireDefault(require("./MovieSearch.jsx"));
+var _ActorSearch = _interopRequireDefault(require("./ActorSearch.jsx"));
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
@@ -56479,7 +56637,9 @@ function App() {
     to: "/clickup"
   }, "Click Up")), /*#__PURE__*/_react["default"].createElement("li", null, /*#__PURE__*/_react["default"].createElement(_reactRouter.Link, {
     to: "/movie"
-  }, "Movie Search")))))))), /*#__PURE__*/_react["default"].createElement("div", {
+  }, "Movie Search")), /*#__PURE__*/_react["default"].createElement("li", null, /*#__PURE__*/_react["default"].createElement(_reactRouter.Link, {
+    to: "/actor"
+  }, "Actor Search")))))))), /*#__PURE__*/_react["default"].createElement("div", {
     className: "container"
   }, /*#__PURE__*/_react["default"].createElement("div", {
     className: "row"
@@ -56509,6 +56669,9 @@ function App() {
   }), /*#__PURE__*/_react["default"].createElement(_reactRouter.Route, {
     path: "/movie",
     element: /*#__PURE__*/_react["default"].createElement(_MovieSearch["default"], null)
+  }), /*#__PURE__*/_react["default"].createElement(_reactRouter.Route, {
+    path: "/actor",
+    element: /*#__PURE__*/_react["default"].createElement(_ActorSearch["default"], null)
   })))))));
 }
 (0, _jquery["default"])(document).ready(function () {
@@ -56518,7 +56681,7 @@ function App() {
   root.render(/*#__PURE__*/_react["default"].createElement(App, null));
 });
 
-},{"./ClickUp.jsx":22,"./Clock.jsx":23,"./CountMe.jsx":24,"./DefaultScreen.jsx":25,"./MovieSearch.jsx":26,"./Timer.jsx":28,"./TodoOne.jsx":29,"jquery":2,"react":12,"react-dom/client":6,"react-router":8}],31:[function(require,module,exports){
+},{"./ActorSearch.jsx":22,"./ClickUp.jsx":23,"./Clock.jsx":24,"./CountMe.jsx":25,"./DefaultScreen.jsx":26,"./MovieSearch.jsx":27,"./Timer.jsx":29,"./TodoOne.jsx":30,"jquery":2,"react":12,"react-dom/client":6,"react-router":8}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -56561,4 +56724,4 @@ var _default = exports["default"] = {
   "getMovieList": getMovieList
 };
 
-},{}]},{},[30]);
+},{}]},{},[31]);

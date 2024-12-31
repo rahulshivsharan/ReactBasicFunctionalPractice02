@@ -12,7 +12,7 @@ import CountMe from "./CountMe.jsx";
 import ClickUp from "./ClickUp.jsx";
 import DefaultScreen from "./DefaultScreen.jsx";
 import MovieSearch from "./MovieSearch.jsx";
-
+import ActorSearch from "./ActorSearch.jsx";
 
 export default function App(){
 	return (
@@ -43,6 +43,7 @@ export default function App(){
 									           <li><Link to="/todo1">Todo One</Link></li>						           
 									           <li><Link to="/clickup">Click Up</Link></li>
 									           <li><Link to="/movie">Movie Search</Link></li>
+									           <li><Link to="/actor">Actor Search</Link></li>
 								         	</ul>
 								        </li>
 									</ul>
@@ -62,6 +63,7 @@ export default function App(){
 									<Route  path="/countme" element={<CountMe/>} />
 									<Route  path="/clickup" element={<ClickUp/>} />
 									<Route  path="/movie" element={<MovieSearch/>} />
+									<Route  path="/actor" element={<ActorSearch/>} />
 								</Routes>
 							</div>
 						</div>				

@@ -1,22 +1,21 @@
 'use strict';
-import React, {useReducer, Fragment} from "react";
+import React, {useState, useEffect, Fragment} from "react";
 import MovieAPI from "./movieAPI";
 import Spinner from "./Spinner.jsx";
 
 
-export default function MovieSearch(){
+export default function ActorSearch(){
 
-	const initialObjectVal = {
-		"movieQuery" : "",
-		"movieList" : [],
-		"isLoading" : false,
-		"movieListComponent" : null		
-	};
+	const [movieQuery, setMovieQuery] = useState("");
+	const [searchQuery, setSearchQuery] = useState("");
+	const [movieInfoList, setMovieInfoList] = useState([]);
+	const [loading, setLoading] = useState(false);
 
-	const handleSearch = () => {
-		MovieAPI.getMovieList(state.movieQuery)
+
+	const handleSearch = () => {		
+		MovieAPI.getMovieList(movieQuery)
 				.then((data) => {
-					console.log(data);
+					//console.log(data);
 					let list = [];
 
 					if ("results" in data["titleResults"]){
@@ -29,15 +28,28 @@ export default function MovieSearch(){
 						list.push(nameList);						
 					}
 
-					dispatchFn({
-						"type" : "LOAD_MOVIE_LIST",
-						"payload" : list
-					});
+					setLoading(false);
+					setMovieInfoList(list);
+					createMovieListComponent();
 					
 				}).catch((error) => {
 					console.log(error);
 				});
 	};
+
+	const resetValues = () => {
+		setMovieInfoList(undefined);
+		setLoading(false);
+		setMovieQuery("");
+		setSeachQuery("");
+	}
+
+	useEffect(()=>{
+		if(searchQuery !== undefined && searchQuery !== ""){
+			handleSearch();
+		}
+	},[searchQuery]);
+
 
 	const createMovieComponent = (list) => { 
 			return(
@@ -110,14 +122,14 @@ export default function MovieSearch(){
 	};		
 			
 
-	const createMovieListComponent = (list, isLoading) => {
-		if(isLoading == true){
+	const createMovieListComponent = () => {
+		if(loading == true){
 			return <Spinner />;
 		}else{
-			let movieList = (isLoading === false && list !== undefined && list !== null && list.length >= 1) ? list[0] : [];
-			let nameList = (isLoading === false && list !== undefined && list !== null && list.length == 2) ? list[1] : [];
+			let movieList = (loading === false && movieInfoList !== undefined && movieInfoList !== null && movieInfoList.length >= 1) ? movieInfoList[0] : [];
+			let nameList = (loading === false && movieInfoList !== undefined && movieInfoList !== null && movieInfoList.length == 2) ? movieInfoList[1] : [];
 
-			if(isLoading === false && list !== undefined && list !== null && list.length > 0) {
+			if(loading === false && movieInfoList !== undefined && movieInfoList !== null && movieInfoList.length > 0) {
 				return (
 					<div>
 						{createMovieComponent(movieList)}
@@ -127,45 +139,11 @@ export default function MovieSearch(){
 				)
 			} 
 		}			
-	};	
-
-	const reducerFn = (state, action) => {
-
-		if(action.type === "SET_MOVIE"){			
-			return {
-				...state, 
-				"movieQuery" : action.searchQuery
-			};
-		}
-
-		if(action.type === "SEARCH_MOVIE"){
-			return {
-				...state,
-				"movieList" : [],
-				"isLoading" : true,
-				"movieListComponent" : createMovieListComponent(undefined, true)
-			};
-		}
-
-		if(action.type === "LOAD_MOVIE_LIST"){			
-			return {
-				...state,
-				"movieList" : action.payload,
-				"movieListComponent" : createMovieListComponent(action.payload, false)								
-			}
-		}
-
-		if(action.type === "MOVIE_RESET"){						
-			return initialObjectVal;
-		}
-	}
-
-
-	const [state, dispatchFn] = useReducer(reducerFn, initialObjectVal);
+	};		
 	
 	return(
 		<Fragment>
-			<h3>Using hook useReducer</h3>
+			<h3>Using hook useEffect</h3>
 			<form className="form-horizontal">
 				<div className="form-group">
 					<label for="inputmovie" className="col-sm-2 control-label">Search</label>
@@ -174,8 +152,8 @@ export default function MovieSearch(){
 								className="form-control" 
 								id="inputmovie" 
 								placeholder="search" 
-								value={state.movieQuery} 
-								onChange={event => dispatchFn({ "type" : "SET_MOVIE", "searchQuery" : event.target.value })} />
+								value={movieQuery} 
+								onChange={event => setMovieQuery(event.target.value)} />
 					</div>
 				</div>
 
@@ -184,20 +162,21 @@ export default function MovieSearch(){
 	      				<button type="button" 
 	      						className="btn btn-primary" 
 	      						onClick={() =>{      					
-	      							dispatchFn({ "type" : "SEARCH_MOVIE" });
+	      							setLoading(true);
+	      							setSearchQuery(movieQuery);
 	      							handleSearch(); 
 	      						}}>Enter</button>
 	      						&nbsp;
 	      				<button type="button" 
 	      					className="btn btn-default" 
 	      					onClick={() => {
-	      						dispatchFn({ "type" : "MOVIE_RESET" });
+	      						resetValues();
 	      					}}>Reset</button>
 	    			</div>
 				</div>
 			</form>
 			<hr/>
-			{state.movieListComponent}
+			{createMovieListComponent()}
 		</Fragment>
 	);
 }
