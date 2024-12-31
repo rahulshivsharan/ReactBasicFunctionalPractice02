@@ -56122,16 +56122,35 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 function MovieSearch() {
   var initialObjectVal = {
     "movieQuery": "",
-    "movieList": []
+    "movieList": [],
+    "isLoading": false,
+    "movieListComponent": null
   };
-  var createMovieListComponent = function createMovieListComponent(movielist, isLoading) {
-    if (isLoading == true) {
-      return /*#__PURE__*/_react["default"].createElement(_Spinner["default"], null);
-    }
-    return isLoading === false && movielist !== undefined && movielist !== null && movielist.length > 0 ? movielist.map(function (movieData) {
-      return /*#__PURE__*/_react["default"].createElement("table", {
-        className: "table table-stripped table-bordered"
-      }, /*#__PURE__*/_react["default"].createElement("thead", null, /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("th", null, "Title"), /*#__PURE__*/_react["default"].createElement("th", null, "Release Year"), /*#__PURE__*/_react["default"].createElement("th", null, "Type"), /*#__PURE__*/_react["default"].createElement("th", null, "Credits"), /*#__PURE__*/_react["default"].createElement("th", null, "Poster"))), /*#__PURE__*/_react["default"].createElement("tbody", null, /*#__PURE__*/_react["default"].createElement("tr", {
+  var handleSearch = function handleSearch() {
+    _movieAPI["default"].getMovieList(state.movieQuery).then(function (data) {
+      console.log(data);
+      var list = [];
+      if ("results" in data["titleResults"]) {
+        var movieList = data["titleResults"]["results"];
+        list.push(movieList);
+      }
+      if ("results" in data["nameResults"]) {
+        var nameList = data["nameResults"]["results"];
+        list.push(nameList);
+      }
+      dispatchFn({
+        "type": "LOAD_MOVIE_LIST",
+        "payload": list
+      });
+    })["catch"](function (error) {
+      console.log(error);
+    });
+  };
+  var createMovieComponent = function createMovieComponent(list) {
+    return /*#__PURE__*/_react["default"].createElement("table", {
+      className: "table table-stripped table-bordered"
+    }, /*#__PURE__*/_react["default"].createElement("thead", null, /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("th", null, "Title"), /*#__PURE__*/_react["default"].createElement("th", null, "Release Year"), /*#__PURE__*/_react["default"].createElement("th", null, "Type"), /*#__PURE__*/_react["default"].createElement("th", null, "Credits"), /*#__PURE__*/_react["default"].createElement("th", null, "Poster"))), /*#__PURE__*/_react["default"].createElement("tbody", null, list.map(function (movieData) {
+      return /*#__PURE__*/_react["default"].createElement("tr", {
         key: movieData.id
       }, /*#__PURE__*/_react["default"].createElement("td", null, movieData.titleNameText), /*#__PURE__*/_react["default"].createElement("td", null, movieData.titleReleaseText), /*#__PURE__*/_react["default"].createElement("td", null, movieData.titleTypeText), /*#__PURE__*/_react["default"].createElement("td", null, /*#__PURE__*/_react["default"].createElement("ul", null, movieData.topCredits.map(function (credit) {
         return /*#__PURE__*/_react["default"].createElement("li", null, credit);
@@ -56145,8 +56164,38 @@ function MovieSearch() {
         height: "290px",
         width: "300px",
         alt: movieData.titleNameText
-      })))));
-    }) : null;
+      })));
+    })));
+  };
+  var createNameComponent = function createNameComponent(list) {
+    return /*#__PURE__*/_react["default"].createElement("table", {
+      className: "table table-stripped table-bordered"
+    }, /*#__PURE__*/_react["default"].createElement("thead", null, /*#__PURE__*/_react["default"].createElement("tr", null, /*#__PURE__*/_react["default"].createElement("th", null, "Name"), /*#__PURE__*/_react["default"].createElement("th", null, "Category"), /*#__PURE__*/_react["default"].createElement("th", null, "Known For"), /*#__PURE__*/_react["default"].createElement("th", null, "Year"), /*#__PURE__*/_react["default"].createElement("th", null, "Poster"))), /*#__PURE__*/_react["default"].createElement("tbody", null, list.map(function (nameData) {
+      return /*#__PURE__*/_react["default"].createElement("tr", {
+        key: nameData.id
+      }, /*#__PURE__*/_react["default"].createElement("td", null, nameData.displayNameText), /*#__PURE__*/_react["default"].createElement("td", null, nameData.knownForJobCategory), /*#__PURE__*/_react["default"].createElement("td", null, nameData.knownForTitleText), /*#__PURE__*/_react["default"].createElement("td", null, nameData.knownForTitleYear), /*#__PURE__*/_react["default"].createElement("td", null, nameData["avatarImageModel"] !== undefined ? /*#__PURE__*/_react["default"].createElement("img", {
+        src: nameData.avatarImageModel.url,
+        height: "290px",
+        width: "300px",
+        alt: nameData.avatarImageModel.caption
+      }) : /*#__PURE__*/_react["default"].createElement("img", {
+        src: "",
+        height: "290px",
+        width: "300px",
+        alt: nameData.displayNameText
+      })));
+    })));
+  };
+  var createMovieListComponent = function createMovieListComponent(list, isLoading) {
+    if (isLoading == true) {
+      return /*#__PURE__*/_react["default"].createElement(_Spinner["default"], null);
+    } else {
+      var movieList = isLoading === false && list !== undefined && list !== null && list.length >= 1 ? list[0] : [];
+      var nameList = isLoading === false && list !== undefined && list !== null && list.length == 2 ? list[1] : [];
+      if (isLoading === false && list !== undefined && list !== null && list.length > 0) {
+        return /*#__PURE__*/_react["default"].createElement("div", null, createMovieComponent(movieList), /*#__PURE__*/_react["default"].createElement("hr", null), createNameComponent(nameList));
+      }
+    }
   };
   var reducerFn = function reducerFn(state, action) {
     if (action.type === "SET_MOVIE") {
@@ -56155,21 +56204,9 @@ function MovieSearch() {
       });
     }
     if (action.type === "SEARCH_MOVIE") {
-      var payload = [];
-      _movieAPI["default"].getMovieList(action.searchQuery).then(function (data) {
-        console.log(data);
-        if ("results" in data["titleResults"]) {
-          payload = data["titleResults"]["results"];
-          dispatchFn({
-            "type": "LOAD_MOVIE_LIST",
-            "payload": payload
-          });
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
       return _objectSpread(_objectSpread({}, state), {}, {
         "movieList": [],
+        "isLoading": true,
         "movieListComponent": createMovieListComponent(undefined, true)
       });
     }
@@ -56180,11 +56217,7 @@ function MovieSearch() {
       });
     }
     if (action.type === "MOVIE_RESET") {
-      return _objectSpread(_objectSpread({}, state), {}, {
-        "movieQuery": "",
-        "movieList": [],
-        "movieListComponent": createMovieListComponent(undefined, false)
-      });
+      return initialObjectVal;
     }
   };
   var _useReducer = (0, _react.useReducer)(reducerFn, initialObjectVal),
@@ -56207,7 +56240,7 @@ function MovieSearch() {
     placeholder: "search",
     value: state.movieQuery,
     onChange: function onChange(event) {
-      dispatchFn({
+      return dispatchFn({
         "type": "SET_MOVIE",
         "searchQuery": event.target.value
       });
@@ -56221,17 +56254,16 @@ function MovieSearch() {
     className: "btn btn-primary",
     onClick: function onClick() {
       dispatchFn({
-        "type": "SEARCH_MOVIE",
-        "searchQuery": state.movieQuery
+        "type": "SEARCH_MOVIE"
       });
+      handleSearch();
     }
   }, "Enter"), "\xA0", /*#__PURE__*/_react["default"].createElement("button", {
     type: "button",
     className: "btn btn-default",
     onClick: function onClick() {
       dispatchFn({
-        "type": "MOVIE_RESET",
-        "searchQuery": ""
+        "type": "MOVIE_RESET"
       });
     }
   }, "Reset")))), /*#__PURE__*/_react["default"].createElement("hr", null), state.movieListComponent);
