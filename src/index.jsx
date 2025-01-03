@@ -43,6 +43,7 @@ export default function App(){
 									           <li><Link to="/timer">Timer</Link></li>
 									           <li><Link to="/todo1">Todo One</Link></li>						           
 									           <li><Link to="/clickup">Click Up</Link></li>
+									           <li><Link to="/clickup2">Increase Me</Link></li>
 									           <li><Link to="/movie">Movie Search</Link></li>
 									           <li><Link to="/actor">Actor Search</Link></li>
 								         	</ul>
@@ -63,6 +64,7 @@ export default function App(){
 									<Route  path="/todo1" element={<TodoOne/>} />
 									<Route  path="/countme" element={<CountMe/>} />
 									<Route  path="/clickup" element={<ClickUp/>} />
+									<Route  path="/clickup2" element={<ClickToIncrease/>} />
 									<Route  path="/movie" element={<MovieSearch/>} />
 									<Route  path="/actor" element={<ActorSearch/>} />
 								</Routes>
