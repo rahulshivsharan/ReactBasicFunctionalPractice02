@@ -13,6 +13,7 @@ import ClickUp from "./ClickUp.jsx";
 import DefaultScreen from "./DefaultScreen.jsx";
 import MovieSearch from "./MovieSearch.jsx";
 import ActorSearch from "./ActorSearch.jsx";
+import ClickToIncrease from "./CountMe02.jsx";
 
 export default function App(){
 	return (

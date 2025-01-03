@@ -1,37 +1,55 @@
 'use strict';
-import React, {useState, useEffect, useReducer} from "react";
+import React, {Fragment, useReducer} from "react";
 
 
 function ClickUp(){
 
 	console.log("ClickUp Screen loaded");
 
-	const [count, dispatch] = useReducer((count, action)=>{  // useReducer(reducerFunctionLogic, IntialState)
+	const initialObjectVal = {
+		"count" : 0
+	};
+
+	const reducerFn = (count, action)=>{  
 		if(action.type === "ADD_UP"){
-			count += 1;			
+			return {
+				...state,
+				"count" : action.current_count + 1
+			}			
 		}
 		if(action.type === "RESET"){
-			count = 0;
+			return {
+				...state,
+				"count" : 0
+			}
 		}	
 		return count;
-	}, 0);
-
-	const handleClick = (count)=>{
-		dispatch({"type" : "ADD_UP"}); // dispatch even object
 	}
 
-	const resetCount = (count)=>{
-		dispatch({"type" : "RESET"}); // dispatch even object
-	}
+	const [state, dispatch] = useReducer(reducerFn, initialObjectVal);
 
 	return (
-		<>
+		<Fragment>
 			<div>
-				<button type="button" className="btn btn-primary" onClick={()=> handleClick(count)}>Click Up</button>&nbsp;
-				<button type="button" className="btn btn-primary" onClick={()=> resetCount(count)}>Reset</button>
+				<button type="button" 
+						className="btn btn-primary" 
+						onClick={()=> {
+							dispatch({
+								"type" : "ADD_UP",
+								"current_count" : state.count								
+							}); 						
+						}}>Click Up</button>
+						&nbsp;
+				<button type="button" 
+						className="btn btn-primary" 
+						onClick={()=> {
+							dispatch({
+								"type" : "RESET"
+							}); 						
+						}}>Reset</button>
 			</div>
-			<h3>{count}</h3>
-		</>
+			<h3>{state.count}</h3>
+		</Fragment>
 	);
 }
 
